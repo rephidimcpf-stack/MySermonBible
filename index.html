@@ -1,8 +1,13 @@
 <!doctype html>
 <html lang="te"><head><meta charset="utf-8">
-<meta name="build" content="2026-11-07-1">
+<meta name="build" content="2026-11-05-app">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="light dark">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Bible">
+<meta name="format-detection" content="telephone=no">
 <meta name="description" content="Telugu Bible (all 66 books) and a sermon writing tool — offline, one file, with a Telugu voice reader and verse cross-references.">
 <meta name="theme-color" content="#f3f4f8">
 <title>Naveen’s Bible &amp; Sermons</title>
@@ -1184,6 +1189,8 @@ body.hl-on #hlb{box-shadow:0 0 0 3px color-mix(in srgb,var(--ac) 25%,transparent
 #blank.on{display:block}
 .pin{background:var(--ac2);border-left:5px solid var(--ac);padding:10px 14px;border-radius:8px;margin:10px 0}
 .pin b{color:var(--ac)}
+.rck{display:flex;gap:8px;align-items:flex-start;margin:0 0 10px;font-size:.86rem;line-height:1.35;cursor:pointer}
+.rck input{margin:2px 0 0;flex:0 0 auto}
 .ov{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:60;display:flex;align-items:center;justify-content:center;padding:16px}
 .dlg{background:var(--sf);border:1px solid var(--bd);border-radius:12px;padding:12px;max-width:580px;width:100%;max-height:88vh;overflow:auto}
 .dlg textarea,.dlg input{width:100%;margin:6px 0}
@@ -2514,6 +2521,66 @@ input.sccol{width:34px;height:34px;min-width:34px;padding:0;border:1px solid var
   .tabs{flex:1 1 auto;justify-content:flex-start}
   header .sp{display:none}
 }
+
+/* ================= native app feel ================= */
+html{overscroll-behavior:none}
+body{overscroll-behavior-y:none}
+button,select,.tab,input,textarea{touch-action:manipulation}
+.tab,header button,#tgl,.tb button,.bar button,.tabs{
+  -webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+button:active:not(:disabled){transform:scale(.965)}
+.tab:active{transform:scale(.93)}
+button{transition:transform .08s ease,background-color .15s ease,color .15s ease,border-color .15s ease}
+.tab .ico{display:none}
+body.modal-open{overflow:hidden}
+/* a message must never steal a tap from the thing under it */
+.toast{pointer-events:none}
+.toast .tact{pointer-events:auto}
+.ov{animation:ovIn .16s ease-out}
+.dlg{animation:dlgIn .22s cubic-bezier(.2,.9,.25,1)}
+@keyframes ovIn{from{opacity:0}to{opacity:1}}
+@keyframes dlgIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes viewIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+main.vin{animation:viewIn .18s ease-out}
+header{transition:transform .22s ease,box-shadow .2s ease}
+header.hdr-hide{transform:translateY(calc(-100% - env(safe-area-inset-top,0px)))}
+@media (prefers-reduced-motion:reduce){
+  .ov,.dlg,main.vin{animation:none}
+  header,button{transition:none}
+}
+@media(max-width:760px){
+  body{padding-bottom:calc(64px + env(safe-area-inset-bottom,0px))}
+  /* primary navigation lives at the bottom, where a thumb reaches */
+  #tabs{position:fixed;left:0;right:0;bottom:0;top:auto;z-index:45;width:100%;max-width:none;
+    display:flex;flex-wrap:nowrap;justify-content:space-around;align-items:stretch;gap:2px;
+    overflow:visible;padding:6px 8px calc(6px + env(safe-area-inset-bottom,0px));
+    background:var(--sf);border-top:1px solid var(--bd);
+    box-shadow:0 -6px 20px rgba(0,0,0,.07)}
+  .tab{position:relative;flex:1 1 0;min-width:0;min-height:48px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+    padding:4px 2px;font-size:11px;line-height:1.1;border:0;border-radius:12px;
+    background:none;color:var(--mu);white-space:nowrap;overflow:visible}
+  .tab .ico{display:block;width:23px;height:23px;fill:none;stroke:currentColor;
+    stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  .tab .glyph{display:none}
+  .tab.on{background:none;color:var(--ac);box-shadow:none;border:0}
+  .tab.on .ico{stroke-width:2.2}
+  .tab.on::before{content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);
+    width:26px;height:3px;border-radius:0 0 3px 3px;background:var(--ac)}
+  .tabn{position:absolute;top:1px;left:calc(50% + 6px);min-width:16px;height:16px;padding:0 4px;
+    border-radius:9px;background:var(--ac);color:#fff;font-size:10px;font-weight:600;
+    display:none;align-items:center;justify-content:center;line-height:1}
+  .tabn.on{display:flex}
+  /* a backdrop-filter on the header would trap the fixed tab bar inside it */
+  /* the sheet's last row must clear the home indicator */
+  .dlg{padding-bottom:calc(14px + env(safe-area-inset-bottom,0px))}
+  /* keep messages clear of the tab bar */
+  .toast{bottom:calc(64px + env(safe-area-inset-bottom,0px) + 12px)}
+  header{padding:6px 10px;-webkit-backdrop-filter:none;backdrop-filter:none}
+  /* the title had to give way to the tab row; with the tabs at the bottom it can return */
+  header h1 span{display:inline;font-size:15px}
+  main{padding-bottom:10px}
+}
 </style></head><body>
 <header>
  <h1><svg class="logo" width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" style="fill:var(--ac)"/><path d="M16 9.5c-2.2-1.6-5-2.2-8-2v14.2c3-.2 5.8.4 8 2 2.2-1.6 5-2.2 8-2V7.5c-3-.2-5.8.4-8 2zM16 9.5v14.2" style="fill:none;stroke:var(--on-ac);stroke-width:1.7;stroke-linejoin:round;stroke-linecap:round"/></svg><span>Telugu Bible</span></h1>
@@ -2569,6 +2636,81 @@ const DEF=()=>({sermons:[],trash:[],notes:{},words:{},wg:{},prom:{},pcats:[],edi
   set:{theme:'',font:'Noto Serif Telugu',size:20,wclick:0,pos:{b:42,c:3},psize:0,
     xrefs:1,ttsRate:1,ttsVoice:'',ttsAuto:0,ttsFollow:1}});
 let S=DEF();
+/* A backup made by an older build, or a hand-edited file, can hold a section that is
+   the wrong shape: null where an object was expected, a number where a string was,
+   a sermon with no blocks. Every one of those used to crash a screen later on.
+   Everything that comes from outside — a restored file, storage written by an older
+   build — is put through this before the app touches it. */
+function sanitizeState(X){
+  if(!X||typeof X!=='object')X={};
+  const isObj=v=>!!v&&typeof v==='object'&&!Array.isArray(v);
+  const obj=v=>isObj(v)?v:{};
+  const arr=v=>Array.isArray(v)?v:[];
+  const str=v=>typeof v==='string'?v:(v==null?'':String(v));
+  const num=(v,d)=>{const n=+v;return isFinite(n)?n:d};
+  X.sermons=arr(X.sermons).filter(x=>isObj(x)).map(x=>{
+    x.id=str(x.id)||uid();
+    x.title=str(x.title);
+    x.blocks=arr(x.blocks).filter(b=>isObj(b)).map(b=>{
+      b.t=str(b.t)||'p';
+      b.h=typeof b.h==='string'?b.h:(b.h==null?'':String(b.h));
+      return b;
+    });
+    if(!x.blocks.length)x.blocks=[{t:'p',h:''}];
+    x.updated=num(x.updated,0);
+    return x;
+  });
+  X.trash=arr(X.trash).filter(t=>isObj(t));
+  /* verse-level maps: only the type each one is supposed to hold survives */
+  const textKeys=['notes','words','wg','edits'];
+  textKeys.forEach(k=>{
+    const src=obj(X[k]),out={};
+    Object.keys(src).forEach(key=>{const v=src[key];if(typeof v==='string'&&v)out[key]=v});
+    X[k]=out;
+  });
+  ['vh','bm'].forEach(k=>{
+    const src=obj(X[k]),out={};
+    Object.keys(src).forEach(key=>{const v=+src[key];if(isFinite(v)&&v)out[key]=v});
+    X[k]=out;
+  });
+  const promSrc=obj(X.prom),promOut={};
+  Object.keys(promSrc).forEach(key=>{
+    const v=promSrc[key];
+    if(!isObj(v))return;
+    promOut[key]={c:str(v.c)||'Other',n:str(v.n),t:num(v.t,0)};
+  });
+  X.prom=promOut;
+  const serSrc=obj(X.ser),serOut={};
+  Object.keys(serSrc).forEach(key=>{
+    const v=serSrc[key];
+    if(!isObj(v))return;
+    serOut[key]={prefix:str(v.prefix)||str(key),color:str(v.color)||''};
+  });
+  X.ser=serOut;
+  const bibSrc=obj(X.bible),bibOut={};
+  Object.keys(bibSrc).forEach(bk=>{
+    const v=bibSrc[bk];if(!isObj(v))return;
+    const chs={};
+    Object.keys(v).forEach(ch=>{
+      const cv=v[ch];if(!isObj(cv))return;
+      const vs={};
+      Object.keys(cv).forEach(ve=>{if(cv[ve]!=null)vs[ve]=str(cv[ve])});
+      chs[ch]=vs;
+    });
+    bibOut[bk]=chs;
+  });
+  X.bible=bibOut;
+  X.pcats=arr(X.pcats).filter(c=>typeof c==='string'&&c);
+  X.xr=obj(X.xr);X.xr.add=obj(X.xr.add);X.xr.hide=obj(X.xr.hide);
+  X.set=Object.assign(DEF().set,obj(X.set));
+  X.set.size=num(X.set.size,20);
+  X.set.psize=num(X.set.psize,0);
+  X.set.psize=Math.min(120,Math.max(0,X.set.psize));
+  X.set.pos=obj(X.set.pos);
+  X.set.pos.b=num(X.set.pos.b,42);
+  X.set.pos.c=num(X.set.pos.c,3);
+  return X;
+}
 /* ---------- storage: IndexedDB (hundreds of MB) with a localStorage fallback ---------- */
 const DB={db:null,name:'telugu-bible',store:'kv'};
 function idbOpen(){
@@ -2617,10 +2759,54 @@ function save(){
   stateTimer=setTimeout(()=>{flushState()},250);
   return true;
 }
+/* one very large record is where mobile browsers give up: 20 MB of sermons in a single
+   put() can fail silently or throw. Big states go in 2 MB pieces, and the reader joins
+   them back together. Small states keep using the single key they always used. */
+const CHUNK=2*1048576;
+function idbDel(k){
+  return new Promise(res=>{
+    if(!DB.db)return res(false);
+    try{
+      const tx=DB.db.transaction(DB.store,'readwrite');
+      tx.objectStore(DB.store).delete(k);
+      tx.oncomplete=()=>res(true);
+      tx.onerror=()=>res(false);
+      tx.onabort=()=>res(false);
+    }catch(e){res(false)}
+  });
+}
+async function idbPutState(json){
+  if(json.length<=CHUNK){
+    const ok=await idbSet('state',json);
+    if(ok)await idbDel('state:meta');
+    return ok;
+  }
+  const parts=Math.ceil(json.length/CHUNK);
+  if(!await idbSet('state:meta',{parts:parts,len:json.length}))return false;
+  for(let i=0;i<parts;i++){
+    if(!await idbSet('state:'+i,json.slice(i*CHUNK,(i+1)*CHUNK)))return false;
+  }
+  await idbDel('state');
+  return true;
+}
+async function idbGetState(){
+  const meta=await idbGet('state:meta');
+  if(meta&&meta.parts){
+    const a=[];
+    for(let i=0;i<meta.parts;i++){
+      const p=await idbGet('state:'+i);
+      if(typeof p!=='string')return null;
+      a.push(p);
+    }
+    const out=a.join('');
+    return out.length===(+meta.len||out.length)?out:null;
+  }
+  return await idbGet('state');
+}
 function flushState(){
   if(!stateDirty||!DB.db)return Promise.resolve(true);
   stateDirty=false;
-  return idbSet('state',JSON.stringify(S)).then(ok=>{
+  return idbPutState(JSON.stringify(S)).then(ok=>{
     if(!ok)toast('Could not save to this browser.');
     return ok;
   });
@@ -3221,9 +3407,11 @@ function backupNotice(){
     '<button id="bknow" class="pri">Back up</button>'+
     '<button id="bklater" class="bkl">Later</button></span></div>';
 }
-/* bring a backup in without losing what is already here */
-function mergeBackup(j){
-  let added=0,updated=0;
+/* bring a backup in without losing what is already here.
+   update=false: only add what this device is missing.
+   update=true : also take the backup's copy where the two differ. */
+function mergeBackup(j,update){
+  let added=0,updated=0,kept=0;
   const byId={};
   (S.sermons||[]).forEach(x=>byId[x.id]=x);
   (j.sermons||[]).forEach(x=>{
@@ -3231,12 +3419,34 @@ function mergeBackup(j){
     const here=byId[x.id];
     if(!here){S.sermons.unshift(x);byId[x.id]=x;added++}
     else if((x.updated||0)>(here.updated||0)){Object.assign(here,x);updated++}
+    else if(update&&JSON.stringify(here)!==JSON.stringify(x)){Object.assign(here,x);updated++}
+    else kept++;
   });
-  /* every keyed collection: keep this device's version, add anything missing */
-  ['notes','words','wg','edits','vh','bm','prom','bible'].forEach(k=>{
+  /* verse text you added or corrected: {book:{chapter:{verse:text}}} — merge level by level */
+  if(!S.bible||typeof S.bible!=='object')S.bible={};
+  Object.keys(j.bible||{}).forEach(bk=>{
+    if(!S.bible[bk]||typeof S.bible[bk]!=='object')S.bible[bk]={};
+    Object.keys(j.bible[bk]||{}).forEach(ch=>{
+      if(!S.bible[bk][ch]||typeof S.bible[bk][ch]!=='object')S.bible[bk][ch]={};
+      Object.keys(j.bible[bk][ch]||{}).forEach(v=>{
+        const mine=S.bible[bk][ch][v],theirs=j.bible[bk][ch][v];
+        if(mine===undefined){S.bible[bk][ch][v]=theirs;added++}
+        else if(update&&mine!==theirs){S.bible[bk][ch][v]=theirs;updated++}
+        else if(mine!==theirs)kept++;
+      });
+    });
+  });
+  /* every other keyed collection: notes, word notes, word studies, verse edits, highlights,
+     saved verses, promises */
+  ['notes','words','wg','edits','vh','bm','prom'].forEach(k=>{
     if(!S[k]||typeof S[k]!=='object')S[k]={};
     const src=j[k]||{};
-    Object.keys(src).forEach(key=>{if(S[k][key]===undefined)S[k][key]=src[key]});
+    Object.keys(src).forEach(key=>{
+      const mine=S[k][key],theirs=src[key];
+      if(mine===undefined){S[k][key]=theirs;added++}
+      else if(update&&JSON.stringify(mine)!==JSON.stringify(theirs)){S[k][key]=theirs;updated++}
+      else if(JSON.stringify(mine)!==JSON.stringify(theirs))kept++;
+    });
   });
   /* the categories you made up yourself */
   if(Array.isArray(j.pcats)){
@@ -3247,6 +3457,7 @@ function mergeBackup(j){
   if(j.set&&typeof j.set==='object')S.set=Object.assign({},S.set||{},j.set);
   if(j.lastBackup&&(!S.lastBackup||j.lastBackup>S.lastBackup))S.lastBackup=j.lastBackup;
   /* series colours are an identity — never overwritten */
+  if(!S.ser||typeof S.ser!=='object')S.ser={};
   if(j.ser)Object.keys(j.ser).forEach(k=>{if(!S.ser[k])S.ser[k]=j.ser[k]});
   if(j.xr&&typeof j.xr==='object'){
     const st=xrState();
@@ -3258,29 +3469,88 @@ function mergeBackup(j){
   /* trash: everything from both sides */
   const tIds=new Set((S.trash||[]).map(t=>t.id));
   (j.trash||[]).forEach(t=>{if(t&&t.id&&!tIds.has(t.id)){S.trash.unshift(t);tIds.add(t.id)}});
-  save();
-  return {added,updated};
+  /* anything a newer build put in the backup that this build does not know about is still
+     carried across, so a merge never quietly drops a whole section */
+  Object.keys(j).forEach(k=>{
+    if(k==='sermons'||k==='bible'||k==='notes'||k==='words'||k==='wg'||k==='edits'||
+       k==='vh'||k==='bm'||k==='prom'||k==='pcats'||k==='set'||k==='ser'||k==='xr'||
+       k==='trash'||k==='lastBackup')return;
+    if(S[k]===undefined)S[k]=j[k];
+  });
+  return {added:added,updated:updated,kept:kept};
 }
 function chooseRestoreMode(){
   return new Promise(res=>{
     modal('<b>Restore backup</b>'+
-      '<p class="hint"><b>Merge</b> keeps everything already on this device and adds only what is new or newer. '+
+      '<p class="hint"><b>Merge</b> keeps everything already on this device and adds only what is new. '+
       '<b>Replace</b> wipes this device and uses the backup exactly.</p>'+
+      '<label class="rck"><input type="checkbox" id="rmergeupd">'+
+      '<span>Also update what this device already has when the backup\u2019s copy is different</span></label>'+
       '<div class="row wrap"><button class="x">Cancel</button>'+
       '<button class="mg">Merge</button><button class="rp dng">Replace</button></div>',
       (d,close)=>{
         d.querySelector('.x').onclick=()=>{close();res(null)};
-        d.querySelector('.mg').onclick=()=>{close();res('merge')};
+        d.querySelector('.mg').onclick=()=>{
+          const u=d.querySelector('#rmergeupd');const upd=!!(u&&u.checked);
+          close();res(upd?'mergeupd':'merge')};
         d.querySelector('.rp').onclick=()=>{close();res('replace')};
       });
   });
 }
 $('#rs').onclick=()=>$('#fi').click();
+/* what a state holds, so a restore can prove what actually arrived */
+function stateCounts(X){
+  const n=o=>Object.keys(o||{}).length;
+  return {sermons:(X.sermons||[]).length,notes:n(X.notes),words:n(X.words),wg:n(X.wg),
+    prom:n(X.prom),bm:n(X.bm),vh:n(X.vh),edits:n(X.edits),trash:(X.trash||[]).length};
+}
+function countsLine(c){
+  const bits=[];
+  if(c.sermons)bits.push(c.sermons+' sermon'+(c.sermons===1?'':'s'));
+  if(c.notes)bits.push(c.notes+' note'+(c.notes===1?'':'s'));
+  if(c.words)bits.push(c.words+' word note'+(c.words===1?'':'s'));
+  if(c.wg)bits.push(c.wg+' word stud'+(c.wg===1?'y':'ies'));
+  if(c.prom)bits.push(c.prom+' promise'+(c.prom===1?'':'s'));
+  if(c.bm)bits.push(c.bm+' saved verse'+(c.bm===1?'':'s'));
+  if(c.vh)bits.push(c.vh+' highlight'+(c.vh===1?'':'s'));
+  if(c.edits)bits.push(c.edits+' verse edit'+(c.edits===1?'':'s'));
+  return bits.length?bits.join(', '):'nothing to show';
+}
+/* After a restore: drop the filters that would hide what just came in, push the write out,
+   read it back and report what this browser is really holding — not just what is on screen. */
+async function afterRestore(msg){
+  q='';fSer='';fBook='';listLimit=80;closedGroups.clear();
+  SIDX=null;bs={b:(S.set.pos&&S.set.pos.b)||42,c:(S.set.pos&&S.set.pos.c)||3};
+  cur=null;orig=null;hist=[];hp=-1;
+  save();
+  const wrote=await flushState();
+  let stored=null;
+  try{
+    const raw=DB.db?await idbGetState():localStorage.getItem('tb');
+    if(raw)stored=JSON.parse(raw);
+  }catch(e){}
+  applySet();render();
+  const here=stateCounts(S),line=countsLine(here);
+  if(!wrote||!stored){
+    toast(msg+' — but this browser did not store it. Keep the app open and take a backup now.',
+      {label:'Back up',fn:()=>backupNow()});
+    return;
+  }
+  const there=stateCounts(stored);
+  const lost=Object.keys(here).filter(k=>there[k]!==here[k]);
+  if(lost.length){
+    toast(msg+' — this browser kept only part of it ('+lost.join(', ')+'). Free up space, then restore again.',
+      {label:'Back up',fn:()=>backupNow()});
+  }else{
+    toast(msg+' — '+line+' saved',{label:'OK'});
+  }
+}
 $('#fi').onchange=async e=>{
   const f=e.target.files&&e.target.files[0];e.target.value='';
   if(!f)return;
   let j;
-  try{j=JSON.parse(await f.text())}catch(x){return toast('Could not read that JSON file')}
+  try{j=JSON.parse(await f.text())}
+  catch(x){return toast('Could not read that file ('+Math.round(f.size/1024)+' KB) — it may be damaged, or only part of it was saved')}
   if(!j||typeof j!=='object')return toast('That is not a backup file');
   /* a single sermon exported as JSON is added to the library, not used to replace everything */
   if(!('sermons' in j)&&(Array.isArray(j.blocks)||typeof j.title==='string')){
@@ -3296,23 +3566,21 @@ $('#fi').onchange=async e=>{
   }
   if(!('sermons' in j)&&!('notes' in j)&&!('bible' in j))
     return toast('That is not a backup file');
+  j=sanitizeState(Object.assign(DEF(),j));
   const mode=await chooseRestoreMode();
   if(!mode)return;
-  if(mode==='merge'){
+  if(mode==='merge'||mode==='mergeupd'){
     flushSave();clearTimeout(saveTimer);saveTimer=null;
-    const r=mergeBackup(j);
-    SIDX=null;bs={b:(S.set.pos&&S.set.pos.b)||42,c:(S.set.pos&&S.set.pos.c)||3};
-    cur=null;orig=null;hist=[];hp=-1;
-    applySet();render();
-    toast('Merged — '+r.added+' added'+(r.updated?', '+r.updated+' updated':''));
+    const r=mergeBackup(j,mode==='mergeupd');
+    await afterRestore('Merged — '+r.added+' added'+
+      (r.updated?', '+r.updated+' updated':'')+
+      (r.kept?', '+r.kept+' left as they are here':''));
     return;
   }
   if(!await yes('Replace everything on this device with the backup?'))return;
   flushSave();clearTimeout(saveTimer);saveTimer=null;
-  S=Object.assign(DEF(),j);S.set=Object.assign(DEF().set,j.set||{});
-  SIDX=null;bs={b:(S.set.pos&&S.set.pos.b)||42,c:(S.set.pos&&S.set.pos.c)||3};
-  cur=null;orig=null;hist=[];hp=-1;
-  save();applySet();render();toast('Backup restored');
+  S=sanitizeState(Object.assign(DEF(),j));
+  await afterRestore('Backup restored');
 };
 
 /* ---------- dialogs ---------- */
@@ -3719,9 +3987,9 @@ function jumpTo(str){
   return false;
 }
 function goVerse(b,c,v){go('bible');bs={b,c};rememberPos();renderBible();scrollToVerse(v)}
-const scrollTo=(el,opt)=>{if(!el)return;try{if(el.scrollIntoView)el.scrollIntoView(opt||{block:'center'})}catch(e){}};
+const scrollEl=(el,opt)=>{if(!el)return;try{if(el.scrollIntoView)el.scrollIntoView(opt||{block:'center'})}catch(e){}};
 function scrollToVerse(v){const el=$('#bt .verse[data-v="'+v+'"]');
-  if(!el)return;scrollTo(el);el.classList.add('flash');
+  if(!el)return;scrollEl(el);el.classList.add('flash');
   setTimeout(()=>el.classList.remove('flash'),1600)}
 
 /* ---------- verse dialog ---------- */
@@ -4953,7 +5221,7 @@ function renderProm(){
   const pk=Object.keys(S.prom||{});
   pk.sort((a,b)=>{const A=a.split('|'),B=b.split('|');
     return (EN.indexOf(A[0])-EN.indexOf(B[0]))||(+A[1]-+B[1])||(+A[2]-+B[2])});
-  const pCats=[...new Set(pk.map(k=>S.prom[k].c))].sort((a,b)=>a.localeCompare(b,'te'));
+  const pCats=[...new Set(pk.map(k=>(S.prom[k]||{}).c).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'te'));
   const today=promiseOfTheDay();
   let pod='';
   if(today){
@@ -5240,7 +5508,7 @@ const newS=()=>({id:uid(),title:'',book:'',ref:'',series:'',category:'',date:'',
 const plainOf=s=>plain((s.blocks||[]).map(b=>b.h||'').join(' '));
 
 function seriesFilterOptions(){
-  const list=Object.keys(S.ser||{}).map(k=>S.ser[k].prefix);
+  const list=Object.keys(S.ser||{}).map(k=>(S.ser[k]||{}).prefix).filter(Boolean);
   (S.sermons||[]).forEach(x=>{const p=seriesPrefix(x.series||'');if(p&&list.indexOf(p)<0)list.push(p)});
   list.sort((a,b)=>a.localeCompare(b,'te'));
   return list.map(p=>'<option value="'+esc(p)+'">'+esc(p)+'</option>').join('');
@@ -5677,7 +5945,7 @@ function seriesColorInfo(){
       d.querySelector('.ok').onclick=()=>{
         if(!S.ser)S.ser={};
         if(!S.ser[key])S.ser[key]={prefix:pre,color:pick};
-        else S.ser[key].color=pick;
+        else (S.ser[key]=S.ser[key]||{prefix:pre,color:''}).color=pick;
         save();close();updateSeriesSwatch();
         if(view==='ser'&&$('#ls')&&typeof renderList==='function')renderList();
         toast('Colour saved for “'+pre+'”');
@@ -5686,7 +5954,7 @@ function seriesColorInfo(){
 }
 function seriesOptions(){
   const curPre=cur?seriesPrefix(cur.series||''):'';
-  const list=Object.keys(S.ser||{}).map(k=>S.ser[k].prefix);
+  const list=Object.keys(S.ser||{}).map(k=>(S.ser[k]||{}).prefix).filter(Boolean);
   if(curPre&&!list.some(p=>p.toLowerCase()===curPre.toLowerCase()))list.push(curPre);
   list.sort((a,b)=>a.localeCompare(b,'te'));
   return list.map(p=>'<option value="'+esc(p)+'"'+
@@ -7876,7 +8144,7 @@ function ttsMark(v){
   const el=$('#bt .verse[data-v="'+v+'"]');
   if(!el)return;
   el.classList.add('reading');
-  if(S.set.ttsFollow!==0)scrollTo(el,{block:'center',behavior:'smooth'});
+  if(S.set.ttsFollow!==0)scrollEl(el,{block:'center',behavior:'smooth'});
 }
 function ttsStart(b,c,fromV){
   if(!synth||!('speechSynthesis' in window)){toast('This browser cannot read text aloud');return}
@@ -8045,11 +8313,11 @@ function ttsSettings(){
 (async function boot(){
 const ok=await idbOpen();
 let j=null,migrated=false;
-if(ok){const raw=await idbGet('state');if(raw){try{j=JSON.parse(raw)}catch(e){}}}
+if(ok){const raw=await idbGetState();if(raw){try{j=JSON.parse(raw)}catch(e){}}}
 if(!j){
   try{const raw=localStorage.getItem('tb');if(raw){j=JSON.parse(raw);migrated=!!ok}}catch(e){}
 }
-if(j&&typeof j==='object'){S=Object.assign(DEF(),j);S.set=Object.assign(DEF().set,j.set||{})}
+if(j&&typeof j==='object'){S=sanitizeState(Object.assign(DEF(),j))}
 /* one-off: 28px was the old fixed presentation size — let it fit the screen instead */
 if(!S.psizeAuto){if(S.set.psize===28)S.set.psize=0;S.psizeAuto=1;save()}
 /* one-off: series saved as PREFIX-0001 gain a part number */
@@ -8092,6 +8360,10 @@ document.addEventListener('keydown',e=>{
 window.__state=()=>S;                       /* handy for diagnostics */
 applySet();
 render();
+/* no IndexedDB means nothing survives a reload — say so instead of letting a restore
+   look successful and then vanish */
+if(!ok)setTimeout(()=>toast('This browser is not letting the app store its data, so anything you add or restore will be gone when you close it.',
+  {label:'Back up',fn:()=>backupNow()}),900);
 if(ok){
   bootWrite=true;
   stateDirty=true;
@@ -8105,6 +8377,128 @@ if(ok){
 })();
 </script>
 <script>
+
+/* ================= native app feel ================= */
+(function(){
+  /* --- icons in the bottom bar (the ✦ / ★ glyphs stay for the desktop row) --- */
+  const ICONS={
+    bible:'M12 6.6c-1.9-1.3-4.3-1.9-7-1.7v12.4c2.7-.2 5.1.4 7 1.7 1.9-1.3 4.3-1.9 7-1.7V4.9c-2.7-.2-5.1.4-7 1.7zM12 6.6v12.4',
+    ser:'M4.5 19.5l4.4-1 8.6-8.6a2.1 2.1 0 0 0-3-3L5.9 15.5l-1.4 4zM13.6 7.6l3 3',
+    pr:'M12 3.5l1.7 4.6 4.6 1.7-4.6 1.7L12 16.1l-1.7-4.6L5.7 9.8l4.6-1.7L12 3.5z',
+    bm:'M7 4h10v16l-5-3.6L7 20V4z'
+  };
+  document.querySelectorAll('.tab').forEach(t=>{
+    const v=t.dataset.v;
+    /* split "✦ Promises " into a glyph part and a label part */
+    const first=t.firstChild;
+    if(first&&first.nodeType===3){
+      const raw=first.nodeValue;
+      const m=raw.match(/^(\s*[^\p{L}\p{N}]*\s*)([\s\S]*)$/u);
+      const glyph=m?m[1]:'',label=m?m[2].trim():raw.trim();
+      const gs=document.createElement('span');gs.className='glyph';gs.textContent=glyph;
+      const ls=document.createElement('span');ls.className='tlbl';ls.textContent=label;
+      t.replaceChild(ls,first);
+      if(glyph)t.insertBefore(gs,ls);
+    }
+    const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+    svg.setAttribute('class','ico');svg.setAttribute('viewBox','0 0 24 24');
+    svg.setAttribute('aria-hidden','true');
+    const path=document.createElementNS('http://www.w3.org/2000/svg','path');
+    path.setAttribute('d',ICONS[v]||ICONS.bible);
+    svg.appendChild(path);
+    t.insertBefore(svg,t.firstChild);
+  });
+
+  /* --- on a phone the bar belongs to the page, not to the header: a header that
+         slides away while you read must not take the navigation with it --- */
+  const tabsEl=document.getElementById('tabs');
+  const hdrEl=document.querySelector('header');
+  function placeTabs(){
+    if(!tabsEl||!hdrEl)return;
+    const mobile=window.matchMedia('(max-width:760px)').matches;
+    if(mobile){
+      if(tabsEl.parentElement!==document.body)document.body.append(tabsEl);
+    }else if(tabsEl.parentElement!==hdrEl){
+      const sp=hdrEl.querySelector('.sp');
+      if(sp)hdrEl.insertBefore(tabsEl,sp);else hdrEl.append(tabsEl);
+    }
+  }
+  placeTabs();
+  window.addEventListener('resize',placeTabs);
+  window.addEventListener('orientationchange',()=>setTimeout(placeTabs,120));
+
+  /* --- reopening lands on the tab you left, like an app --- */
+  try{
+    const saved=localStorage.getItem('tb:view');
+    if(saved&&['bible','ser','pr','bm'].indexOf(saved)>=0&&saved!=='bible'){
+      setTimeout(()=>{
+        const btn=document.querySelector('.tab[data-v="'+saved+'"]');
+        if(btn)btn.click();
+      },80);
+    }
+  }catch(e){}
+
+  /* --- a short buzz on the tab bar, the way a native bar does --- */
+  const buzz=ms=>{try{if(navigator.vibrate)navigator.vibrate(ms)}catch(e){}};
+  document.addEventListener('click',e=>{
+    const t=e.target.closest&&e.target.closest('.tab');
+    if(!t)return;
+    buzz(8);
+    try{localStorage.setItem('tb:view',t.dataset.v)}catch(err){}
+  },true);
+
+  /* --- each tab remembers where you were reading --- */
+  const POS={};
+  let lastView=(document.querySelector('.tab.on')||{}).dataset;
+  document.addEventListener('click',e=>{
+    const t=e.target.closest&&e.target.closest('.tab');
+    if(!t)return;
+    const cur=document.querySelector('.tab.on');
+    if(cur)POS[cur.dataset.v]=window.scrollY||0;
+    const v=t.dataset.v;
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{
+      const y=POS[v]||0;
+      if(y>0)window.scrollTo(0,y);else window.scrollTo(0,0);
+      const m=document.getElementById('app');
+      if(m){m.classList.remove('vin');void m.offsetWidth;m.classList.add('vin')}
+    }));
+  },true);
+
+  /* --- the title bar steps out of the way while you read, and comes back --- */
+  let lastY=0,hid=false;
+  window.addEventListener('scroll',()=>{
+    const h=document.querySelector('header');
+    if(!h)return;
+    const y=window.scrollY||0;
+    if(y>64&&y>lastY+8&&!hid){h.classList.add('hdr-hide');hid=true}
+    else if((y<lastY-8||y<64)&&hid){h.classList.remove('hdr-hide');hid=false}
+    lastY=y;
+  },{passive:true});
+
+  /* --- a sheet holds the page still behind it --- */
+  const lock=()=>document.body.classList.toggle('modal-open',!!document.querySelector('.ov'));
+  try{new MutationObserver(lock).observe(document.body,{childList:true});}catch(e){}
+
+  /* --- launch from the home screen without a browser bar --- */
+  try{
+    const icon=document.querySelector('link[rel="icon"]');
+    const src=icon?icon.getAttribute('href'):'';
+    const at=document.createElement('link');
+    at.rel='apple-touch-icon';at.href=src;document.head.append(at);
+    if(src){
+      const mf={
+        name:"Naveen's Bible & Sermons",short_name:'Bible',lang:'te',
+        start_url:location.pathname,scope:'./',display:'standalone',
+        orientation:'portrait',background_color:'#f3f4f8',theme_color:'#f3f4f8',
+        icons:[{src:src,sizes:'192x192',type:'image/png',purpose:'any'},
+               {src:src,sizes:'192x192',type:'image/png',purpose:'maskable'}]
+      };
+      const url=URL.createObjectURL(new Blob([JSON.stringify(mf)],{type:'application/manifest+json'}));
+      const l=document.createElement('link');l.rel='manifest';l.href=url;document.head.append(l);
+    }
+  }catch(e){}
+})();
+
 if ('serviceWorker' in navigator && location.protocol.indexOf('http') === 0) {
   window.addEventListener('load', function () {
     navigator.serviceWorker.register('sw.js', {updateViaCache: 'none'})
