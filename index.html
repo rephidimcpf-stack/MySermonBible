@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="te"><head><meta charset="utf-8">
-<meta name="build" content="2026-11-05-app">
+<meta name="build" content="2026-11-05-app3">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="light dark">
 <meta name="mobile-web-app-capable" content="yes">
@@ -2580,6 +2580,32 @@ header.hdr-hide{transform:translateY(calc(-100% - env(safe-area-inset-top,0px)))
   /* the title had to give way to the tab row; with the tabs at the bottom it can return */
   header h1 span{display:inline;font-size:15px}
   main{padding-bottom:10px}
+}
+
+/* ================= reading panel + text weight ================= */
+/* the sticky panel must sit above the verses it covers, and be fully solid */
+.bbnav{z-index:35;background:var(--sf);
+  box-shadow:0 8px 22px rgba(0,0,0,.10),0 1px 0 var(--bd);
+  border-bottom-left-radius:14px;border-bottom-right-radius:14px}
+.tb{z-index:35;background:var(--sf)}
+#app>.bar{z-index:35}
+/* reading text: thicker strokes, fully black on light themes and fully white on dark */
+.verse,.vtext,.vovtx,.blk,.cmt,.pod,.card p{font-weight:600}
+.verse b,.blk b,.vtext b{font-weight:700}
+@media(max-width:760px){
+  /* once the title bar steps away the panel takes the very top, with no gap
+     for the text to scroll through */
+  header.hdr-hide ~ * .bbnav,header.hdr-hide ~ .bbnav{top:env(safe-area-inset-top,0px)}
+}
+
+/* ================= chrome steps aside while you scroll ================= */
+.bbnav,#ed .bar,#ed .tb{transition:transform .22s cubic-bezier(.2,.9,.3,1)}
+.bbnav.retreat{transform:translateY(-102%)}
+@media(prefers-reduced-motion:reduce){.bbnav,#ed .bar,#ed .tb{transition:none}}
+/* nothing behind a pinned bar may show through it */
+@media(max-width:760px){
+  header{background:var(--sf)}
+  #ed .bar{background:var(--sf)}
 }
 </style></head><body>
 <header>
@@ -8439,7 +8465,11 @@ if(ok){
   }catch(e){}
 
   /* --- a short buzz on the tab bar, the way a native bar does --- */
-  const buzz=ms=>{try{if(navigator.vibrate)navigator.vibrate(ms)}catch(e){}};
+  const buzz=ms=>{try{
+    if(!navigator.vibrate)return;
+    if(navigator.userActivation&&!navigator.userActivation.hasBeenActive)return;
+    navigator.vibrate(ms);
+  }catch(e){}};
   document.addEventListener('click',e=>{
     const t=e.target.closest&&e.target.closest('.tab');
     if(!t)return;
@@ -8464,16 +8494,61 @@ if(ok){
     }));
   },true);
 
-  /* --- the title bar steps out of the way while you read, and comes back --- */
-  let lastY=0,hid=false;
-  window.addEventListener('scroll',()=>{
+  /* --- the chrome steps aside while you scroll down and comes back the moment
+         you scroll up or touch the text: the title bar, the Bible tools panel,
+         and the sermon editor's action bar and format toolbar.
+         A panel only retreats once it is actually pinned to the top — moving one
+         that is still in the flow would leave a hole where it used to sit. --- */
+  const root=document.documentElement;
+  let lastY=window.scrollY||0,edHidden=false,edOff=0;
+  function setEditorChrome(hide){
+    const bar=document.querySelector('#ed .bar');
+    const tb=document.querySelector('#ed .tb');
+    if(!bar||!tb)return;
+    if(hide===edHidden)return;
+    edHidden=hide;
+    edOff=bar.offsetHeight+tb.offsetHeight+14;
+    const off=hide?'translateY(-'+edOff+'px)':'';
+    bar.style.transform=off;tb.style.transform=off;
+    bar.style.pointerEvents=hide?'none':'';
+    tb.style.pointerEvents=hide?'none':'';
+  }
+  function applyChrome(down,up){
     const h=document.querySelector('header');
     if(!h)return;
     const y=window.scrollY||0;
-    if(y>64&&y>lastY+8&&!hid){h.classList.add('hdr-hide');hid=true}
-    else if((y<lastY-8||y<64)&&hid){h.classList.remove('hdr-hide');hid=false}
-    lastY=y;
+    if(down&&y>90){h.classList.add('hdr-hide');root.style.setProperty('--hdr','0px')}
+    else if(up||y<=90){h.classList.remove('hdr-hide');root.style.setProperty('--hdr',h.offsetHeight+'px')}
+    const away=h.classList.contains('hdr-hide');
+    const nav=document.querySelector('.bbnav');
+    if(nav){
+      const pinned=nav.getBoundingClientRect().top<=2;
+      nav.classList.toggle('retreat',away&&pinned);
+    }
+    const bar=document.querySelector('#ed .bar');
+    if(bar)setEditorChrome(away&&bar.getBoundingClientRect().top<=2);
+  }
+  let ticking=false;
+  window.addEventListener('scroll',()=>{
+    if(ticking)return;
+    ticking=true;
+    requestAnimationFrame(()=>{
+      ticking=false;
+      const y=window.scrollY||0;
+      applyChrome(y>lastY+2,y<lastY-2);
+      lastY=y;
+    });
   },{passive:true});
+  /* typing brings the tools back, whatever the scroll is doing */
+  document.addEventListener('focusin',e=>{
+    if(e.target.closest&&e.target.closest('#ed')){
+      const h=document.querySelector('header');
+      if(h){h.classList.remove('hdr-hide');root.style.setProperty('--hdr',h.offsetHeight+'px')}
+      setEditorChrome(false);
+      const nav=document.querySelector('.bbnav');
+      if(nav)nav.classList.remove('retreat');
+    }
+  },true);
 
   /* --- a sheet holds the page still behind it --- */
   const lock=()=>document.body.classList.toggle('modal-open',!!document.querySelector('.ov'));
