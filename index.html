@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="te"><head><meta charset="utf-8">
-<meta name="build" content="2026-11-05-app3">
+<meta name="build" content="2026-11-05-app4">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="light dark">
 <meta name="mobile-web-app-capable" content="yes">
@@ -2607,6 +2607,13 @@ header.hdr-hide{transform:translateY(calc(-100% - env(safe-area-inset-top,0px)))
   header{background:var(--sf)}
   #ed .bar{background:var(--sf)}
 }
+/* ================= presenting ================= */
+/* the presentation layer must sit above every piece of app chrome: its grip,
+   its footer counter and its dock live at the bottom of the screen, exactly
+   where the tab bar now is */
+#pres{z-index:50}
+body.pres-on #tabs{display:none}
+body.pres-on{padding-bottom:0}
 </style></head><body>
 <header>
  <h1><svg class="logo" width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" style="fill:var(--ac)"/><path d="M16 9.5c-2.2-1.6-5-2.2-8-2v14.2c3-.2 5.8.4 8 2 2.2-1.6 5-2.2 8-2V7.5c-3-.2-5.8.4-8 2zM16 9.5v14.2" style="fill:none;stroke:var(--on-ac);stroke-width:1.7;stroke-linejoin:round;stroke-linecap:round"/></svg><span>Telugu Bible</span></h1>
