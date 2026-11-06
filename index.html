@@ -730,7 +730,11 @@ header h1{font-size:16px;margin:0 6px 0 0;white-space:nowrap}
  header{gap:6px;padding:8px 10px}
  #tgl{display:inline-block}
  .tools{display:none}
- .tools.open{display:flex}
+ .tools.open{display:flex;flex-wrap:wrap;align-items:center}
+}
+/* phones: settings panel becomes a 2-column grid (beats the flex rule above) */
+@media(max-width:600px){
+  .tools.open{display:grid!important;grid-template-columns:1fr 1fr;gap:8px}
 }
 main{max-width:1100px;margin:0 auto;padding:10px;overflow:visible}
 #ed{overflow:visible}
@@ -815,23 +819,26 @@ main{max-width:1100px;margin:0 auto;padding:10px;overflow:visible}
 /* Phones — compact controls */
 @media(max-width:600px){
   .bbnav{
-    padding:8px;gap:6px;margin-bottom:8px;
+    padding:8px;gap:8px;margin-bottom:8px;
     border-radius:10px}
   .bbnav .row1{grid-template-columns:1fr;gap:6px}
-  .bbnav .loc{display:grid;grid-template-columns:auto 1fr;gap:5px;align-items:center}
-  .bbnav .loc .tseg{grid-column:1;grid-row:1}
+  .bbnav .loc{display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px;align-items:center}
+  .bbnav .loc .tseg{grid-column:1;grid-row:1;align-self:stretch;display:flex;align-items:center}
+  .bbnav .loc .tseg button{min-height:36px;min-width:36px;padding:4px 8px}
   .bbnav #sb{grid-column:2;grid-row:1;max-width:none;min-width:0;width:100%;
-    min-height:32px;font-size:13px;padding:4px 8px}
-  .bbnav .nvg{grid-column:1;grid-row:2}
-  .bbnav .nvg button{min-width:32px;min-height:32px;font-size:1.05em;padding:2px 6px}
+    min-height:36px;font-size:16px;padding:6px 10px}
+  .bbnav .nvg{grid-column:1;grid-row:2;display:inline-flex;gap:4px;align-items:center}
+  .bbnav .nvg button{min-width:36px;min-height:36px;font-size:1.1em;padding:4px 8px;flex:0 0 auto}
   .bbnav #jmp{grid-column:2;grid-row:2;max-width:none;min-width:0;width:100%;
-    min-height:32px;font-size:13px;padding:4px 8px}
+    min-height:36px;font-size:16px;padding:6px 10px}
   .bbnav .acts{
-    display:flex;flex-wrap:wrap;gap:4px;width:100%;margin:0}
-  .bbnav .acts button{flex:1 1 auto;min-width:calc(50% - 4px);width:auto;
-    min-height:32px;padding:4px 8px;font-size:12.5px;justify-content:center}
-  .bbnav .ch{min-width:32px;height:30px;padding:0 8px;font-size:12.5px;border-radius:8px}
-  .bbnav .chstrip{padding-top:6px;gap:3px}
+    display:grid;grid-template-columns:1fr 1fr;gap:6px;width:100%;margin:0}
+  .bbnav .acts button{min-width:0;width:100%;
+    min-height:36px;padding:6px 8px;font-size:13px;justify-content:center;
+    display:inline-flex;align-items:center}
+  .bbnav .ch{min-width:34px;height:34px;padding:0 8px;font-size:13px;border-radius:8px;
+    display:inline-flex;align-items:center;justify-content:center}
+  .bbnav .chstrip{padding-top:6px;gap:4px;align-items:center}
   .hlbar{grid-template-columns:1fr;gap:6px;padding:8px}
   .hlbar .sws{justify-content:flex-start;gap:4px}
   .hlbar .sw{width:26px;height:26px}
@@ -1423,24 +1430,27 @@ button,select,input,.tab,.vpin,.row-i,.bmrow,.vn,.mk,.hlbar .sw{
 }
 /* Larger, more reliable touch targets on phones */
 @media(max-width:600px){
-  button,.tab{min-height:40px;min-width:40px;padding:8px 12px}
-  .tab{padding:8px 14px;font-size:15px}
-  header{padding:8px 10px;gap:8px}
+  /* Touch height without forcing min-width — width is controlled per panel */
+  button{min-height:36px;min-width:0;padding:6px 10px}
+  select,input{min-height:36px;min-width:0;padding:6px 10px}
+  /* header tabs only — bottom #tabs uses its own column layout */
+  header .tab{min-height:36px;min-width:0;padding:6px 10px;font-size:13px}
+  header{padding:6px 10px;gap:6px}
   header h1{font-size:15px}
-  .tools{gap:10px;padding:10px 0 4px}
-.bld{font-size:.72em;color:var(--mu);align-self:center;margin-left:auto;letter-spacing:.02em;
+  .tools{gap:8px;padding:10px 0 6px}
+  .bld{font-size:.72em;color:var(--mu);align-self:center;margin-left:auto;letter-spacing:.02em;
   font-variant-numeric:tabular-nums;white-space:nowrap}
-  .tools button,.tools select{min-height:40px;font-size:14px}
+  .tools button,.tools select{min-height:36px;font-size:13px;padding:6px 10px}
   .vn{font-size:.85em;padding:2px 4px;min-width:1.6em;display:inline-block;text-align:center}
   .vnote{font-size:.7em;padding:3px 9px;min-height:22px}
   .row-i{padding:10px 8px;min-height:48px}
   .ri-ttl{font-size:1em;line-height:1.4}
   .grp{padding:10px 8px;min-height:44px}
   .bmrow{padding:12px 8px;min-height:48px}
-  .hlbar .sw{width:34px;height:34px}
-  .scl{width:40px;height:40px}
-  .tb button{min-height:38px;min-width:38px;padding:6px 10px}
-  .tb select{min-height:38px}
+  .hlbar .sw{width:32px;height:32px}
+  .scl{width:36px;height:36px}
+  .tb button{min-height:34px;min-width:34px;padding:5px 8px}
+  .tb select{min-height:34px}
   .mk{min-width:28px;min-height:28px;font-size:1.1em}
   .blk[data-t=toggle] .mk{width:32px;min-width:32px;height:32px}
   .dlg{max-width:100%;width:100%;border-radius:12px 12px 0 0;max-height:92vh;margin:0;padding:14px}
@@ -1448,12 +1458,12 @@ button,select,input,.tab,.vpin,.row-i,.bmrow,.vn,.mk,.hlbar .sw{
   #ls{max-height:min(62dvh,620px);-webkit-overflow-scrolling:touch}
   .card{border-radius:10px}
   main{padding:8px 10px 24px}
-  .bar{gap:8px}
+  .bar{gap:6px;align-items:center}
   .meta input,#ttl{font-size:16px} /* prevent iOS zoom on focus */
   select,input,textarea{font-size:16px} /* critical: stop iOS auto-zoom */
   .sbox input{font-size:16px;padding:10px 36px 10px 12px}
   .qclr{padding:8px 12px;min-height:36px}
-  .fbar select{font-size:14px;min-height:38px}
+  .fbar select{font-size:14px;min-height:36px}
   #pres{padding-left:4vw;padding-right:4vw;padding-bottom:calc(env(safe-area-inset-bottom,0px) + 90px)}
   #pres .pc{max-width:100%;padding:0 2px}
   .toast{bottom:calc(env(safe-area-inset-bottom,0px) + 16px);padding:10px 18px;font-size:14px}
@@ -1461,11 +1471,10 @@ button,select,input,.tab,.vpin,.row-i,.bmrow,.vn,.mk,.hlbar .sw{
 }
 /* Extra small phones */
 @media(max-width:380px){
-  .tab{padding:7px 10px;font-size:14px}
-  button{padding:7px 10px;font-size:13.5px}
-  .bar button,.bar select{font-size:13px;padding:6px 7px}
-  .tb button{min-width:34px;padding:5px 6px}
-  header{gap:5px}
+  header{gap:4px;padding:5px 8px}
+  header .tab{padding:5px 8px;font-size:12px}
+  .bar button,.bar select{font-size:13px;padding:5px 8px}
+  .tb button{min-width:32px;min-height:32px;padding:4px 6px}
 }
 /* Landscape phones: keep header compact, more content space */
 @media(max-height:480px) and (orientation:landscape){
@@ -2050,47 +2059,77 @@ main{padding:16px 14px 40px}
   #app .sw,#app .hlbar .sw{padding:0}
 }
 @media(max-width:520px){
-  header{gap:4px 6px;padding:8px 10px}
-  .tab{padding:6px 9px;font-size:13.5px}
+  header{gap:4px 6px;padding:6px 10px}
+  header .tab{padding:5px 8px;font-size:12.5px}
   header h1{margin-right:2px!important}
 }
 
 /* ========== mobile compact controls (phones) ========== */
 @media(max-width:600px){
-  header{padding:5px 8px;gap:5px}
-  header h1{font-size:14px}
-  .tab{padding:5px 9px;font-size:13px;min-height:30px}
-  button,select,input{min-height:30px;padding:4px 8px;font-size:13px;border-radius:7px}
-  .tools button,.tools select{min-height:30px;font-size:12.5px;padding:4px 8px}
-  .tools .tgl{font-size:12.5px}
-  #app>.bar,.bbnav{gap:5px}
+  /* allow tools row to wrap under title; keep title row items aligned */
+  header{padding:6px 10px;gap:6px;flex-wrap:wrap;align-items:center}
+  header h1{font-size:15px;min-width:0;flex:1 1 auto}
+  header #tgl{flex:0 0 auto;min-width:40px;min-height:40px}
+  /* Settings (tools) panel: full-width row under the title, 2-column grid */
+  .tools{display:none;width:100%;flex:1 0 100%;
+    gap:8px;align-items:stretch;
+    padding:10px 0 6px;border-top:1px solid var(--bd);box-sizing:border-box}
+  .tools.open{display:grid!important;grid-template-columns:1fr 1fr;gap:8px;align-items:stretch}
+  .tools.open > *{min-width:0;width:100%;max-width:100%;box-sizing:border-box}
+  .tools.open select,.tools.open button{min-height:40px;width:100%;font-size:14px;padding:8px 10px;
+    display:flex;align-items:center;justify-content:center;text-align:center}
+  .tools.open select{text-align:left;justify-content:flex-start}
+  .tools.open .tgl{display:flex;align-items:center;gap:8px;min-height:40px;padding:0 8px;
+    grid-column:1 / -1;font-size:14px}
+  .tools.open .bld{grid-column:1 / -1;margin:0;text-align:right;padding:4px 2px}
+  /* A− / A+ already adjacent in DOM — keep them as the two grid cells */
+  .tools .tgl{font-size:14px}
+  /* Generic bars */
+  #app>.bar,.bbnav{gap:6px}
+  #app>.bar{display:flex;flex-wrap:wrap;align-items:center}
   #app>.bar button,#app>.bar select,#app>.bar input{
-    min-height:30px;min-width:30px;padding:3px 7px;font-size:12.5px;border-radius:7px}
-  #app>.bar .tseg button{min-height:28px;padding:3px 8px;font-size:12px}
-  #app>.bar .nvg button{min-width:30px;padding:3px 5px;font-size:14px}
-  #ed .bar{padding:5px 6px;gap:4px}
-  #ed .bar button{min-height:28px;padding:3px 7px;font-size:12px}
-  .tb{padding:5px 6px;gap:3px}
+    min-height:36px;min-width:0;padding:6px 10px;font-size:13px;border-radius:8px}
+  #app>.bar .tseg{display:inline-flex;align-items:center;gap:0}
+  #app>.bar .tseg button{min-height:36px;padding:6px 10px;font-size:13px}
+  #app>.bar .nvg{display:inline-flex;align-items:center;gap:4px}
+  #app>.bar .nvg button{min-width:36px;min-height:36px;padding:4px 8px;font-size:15px}
+  /* Sermon editor action bar + format toolbar */
+  #ed .bar{padding:6px 8px;gap:6px;align-items:center}
+  #ed .bar button,#ed .bar select{min-height:34px;padding:5px 9px;font-size:13px}
+  .tb{padding:6px 8px;gap:6px;align-items:center}
   .tb .tbgl{display:none}
   .tb .tbg{display:contents}
   .tb .tbb{display:contents;background:transparent;border:none;padding:0}
-  .tb .tbb button,.tb .tbb select{min-height:28px;min-width:28px;padding:3px 6px;font-size:12.5px;
-    background:var(--bg);border:1px solid var(--bd);border-radius:7px}
-  .tb .tbb select{min-width:4.8em;font-size:12px}
-  .ntb-pro{padding:5px;gap:5px}
-  .ntb-pro .ntbb button{min-height:28px;min-width:28px;padding:3px 6px;font-size:12.5px}
-  .ntb-pro .nt-sw .sw{width:22px;height:22px;min-width:22px}
-  .ntb-pro .ntgl{font-size:.58em}
-  .meta select,.meta input{min-height:30px;font-size:13px;padding:4px 7px}
-  .vpin{padding:7px 8px;font-size:.8em}
-  .vpin .vpico{width:24px;height:24px;font-size:.85em}
-  .dlg button{min-height:32px;padding:5px 10px;font-size:13px}
-  .dlg .dfoot button{min-height:34px}
+  .tb .tbb button,.tb .tbb select{min-height:34px;min-width:34px;padding:5px 8px;font-size:13px;
+    background:var(--bg);border:1px solid var(--bd);border-radius:8px;
+    display:inline-flex;align-items:center;justify-content:center}
+  .tb .tbb select{min-width:5em;font-size:13px}
+  .ntb-pro{padding:6px;gap:6px;align-items:center}
+  .ntb-pro .ntbb button{min-height:34px;min-width:34px;padding:5px 8px;font-size:13px}
+  .ntb-pro .nt-sw .sw{width:24px;height:24px;min-width:24px}
+  .ntb-pro .ntgl{font-size:.6em}
+  /* Meta / filters / dialogs */
+  .meta{grid-template-columns:1fr 1fr;gap:8px}
+  .meta select,.meta input{min-height:36px;font-size:16px;padding:6px 10px;width:100%}
+  .fbar{gap:6px;align-items:center}
+  .fbar select{min-height:36px;font-size:14px;flex:1 1 120px}
+  .sfilt{width:100%;max-width:100%}
+  .sfilt button{flex:1 1 0;min-height:36px;padding:6px 10px;text-align:center}
+  .hlbar{grid-template-columns:1fr;gap:8px;padding:8px 10px;align-items:center}
+  .hlbar .sws{display:flex;flex-wrap:wrap;gap:6px;align-items:center;justify-content:flex-start}
+  .vpin{padding:8px 10px;font-size:.85em}
+  .vpin .vpico{width:28px;height:28px;font-size:.9em}
+  .dlg button{min-height:36px;padding:6px 12px;font-size:13px}
+  .dlg .dfoot{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:flex-end}
+  .dlg .dfoot button{min-height:38px}
+  .row{gap:8px;align-items:center}
+  .row button{min-height:36px}
 }
 @media(max-width:380px){
-  button,select,input{font-size:12.5px;padding:3px 6px}
-  .bbnav .acts button{min-width:calc(50% - 3px);font-size:12px;padding:3px 6px}
-  .tab{padding:4px 7px;font-size:12.5px}
+  .tools.open{grid-template-columns:1fr}
+  .bbnav .acts{grid-template-columns:1fr 1fr;gap:6px}
+  .bbnav .acts button{font-size:12.5px;padding:6px 6px}
+  .meta{grid-template-columns:1fr}
 }
 
 
@@ -2321,8 +2360,6 @@ main{padding:16px 14px 40px}
 /* the search results list is built the same way */
 .srlist>.srit,.srlist>.sgh{flex:0 0 auto}
 
-/* position only — never opacity, so a frozen animation can never hide the bar */
-to{transform:none}}
 .verse .w.thl{background:var(--thc,#ffe08a);border-radius:4px;
   box-shadow:0 0 0 1px color-mix(in srgb,var(--thc,#ffe08a) 55%,transparent);
   -webkit-box-decoration-break:clone;box-decoration-break:clone}
@@ -2493,22 +2530,24 @@ input.sccol{width:34px;height:34px;min-width:34px;padding:0;border:1px solid var
   letter-spacing:.14em;text-transform:uppercase;color:#6b5a3e;
   border-top:1px solid rgba(150,95,20,.28)}
 @media(max-width:600px){
-  header{gap:5px;padding:6px 8px;flex-wrap:wrap}
-  header h1{flex:0 0 auto}
-  header h1 span{display:none}
-  header h1 svg{width:24px;height:24px}
+  header{gap:5px;padding:6px 8px}
+  header h1{flex:1 1 auto;min-width:0}
+  /* title stays visible on phones (tabs live in the bottom bar) */
+  header h1 span{display:inline;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  header h1 svg{width:24px;height:24px;flex:0 0 auto}
   header .tab{font-size:12px;padding:5px 7px;min-width:0;min-height:34px;flex:0 1 auto;white-space:nowrap}
   header .sp{display:none}
-  header #tgl{min-width:38px;min-height:34px;padding:4px 8px}
-  .tabn{min-width:16px;height:16px;font-size:10px;line-height:16px;padding:0 4px;margin-left:4px}
+  header #tgl{min-width:38px;min-height:34px;padding:4px 8px;flex:0 0 auto}
+  header .tabn{min-width:16px;height:16px;font-size:10px;line-height:16px;padding:0 4px;margin-left:4px}
   .pc-verse{font-size:1.16em}
 }
 @media(max-width:380px){
   header{gap:4px;padding:5px 6px}
   header .tab{font-size:11px;padding:4px 6px;min-height:32px}
+  header h1 span{font-size:14px}
   header h1 svg{width:22px;height:22px}
   header #tgl{min-width:34px;min-height:32px;padding:3px 6px;font-size:15px}
-  .tabn{min-width:15px;height:15px;font-size:9.5px;line-height:15px;padding:0 3px;margin-left:3px}
+  header .tabn{min-width:15px;height:15px;font-size:9.5px;line-height:15px;padding:0 3px;margin-left:3px}
 }
 
 /* ---------- tab strip: one row, scrolls if it must ---------- */
@@ -2555,31 +2594,44 @@ header.hdr-hide{transform:translateY(calc(-100% - env(safe-area-inset-top,0px)))
     display:flex;flex-wrap:nowrap;justify-content:space-around;align-items:stretch;gap:2px;
     overflow:visible;padding:6px 8px calc(6px + env(safe-area-inset-bottom,0px));
     background:var(--sf);border-top:1px solid var(--bd);
-    box-shadow:0 -6px 20px rgba(0,0,0,.07)}
-  .tab{position:relative;flex:1 1 0;min-width:0;min-height:48px;
+    box-shadow:0 -6px 20px rgba(0,0,0,.07);
+    flex:none;min-height:0;height:auto;box-sizing:border-box}
+  #tabs .tab{position:relative;flex:1 1 0;min-width:0;min-height:48px;max-width:none;
     display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
     padding:4px 2px;font-size:11px;line-height:1.1;border:0;border-radius:12px;
-    background:none;color:var(--mu);white-space:nowrap;overflow:visible}
-  .tab .ico{display:block;width:23px;height:23px;fill:none;stroke:currentColor;
+    background:none;color:var(--mu);white-space:nowrap;overflow:visible;
+    transform:none}
+  #tabs .tab .ico{display:block;width:23px;height:23px;fill:none;stroke:currentColor;
     stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-  .tab .glyph{display:none}
-  .tab.on{background:none;color:var(--ac);box-shadow:none;border:0}
-  .tab.on .ico{stroke-width:2.2}
-  .tab.on::before{content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);
+  #tabs .tab .glyph{display:none}
+  #tabs .tab .tlbl{display:block;font-size:11px;line-height:1.1;max-width:100%;
+    overflow:hidden;text-overflow:ellipsis}
+  #tabs .tab.on{background:none;color:var(--ac);box-shadow:none;border:0}
+  #tabs .tab.on .ico{stroke-width:2.2}
+  #tabs .tab.on::before{content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);
     width:26px;height:3px;border-radius:0 0 3px 3px;background:var(--ac)}
-  .tabn{position:absolute;top:1px;left:calc(50% + 6px);min-width:16px;height:16px;padding:0 4px;
+  #tabs .tabn{position:absolute;top:1px;left:calc(50% + 6px);min-width:16px;height:16px;padding:0 4px;
     border-radius:9px;background:var(--ac);color:#fff;font-size:10px;font-weight:600;
     display:none;align-items:center;justify-content:center;line-height:1}
-  .tabn.on{display:flex}
+  #tabs .tabn.on{display:flex}
+  /* TTS player sits above the tab bar instead of covering it */
+  body.tts-on #ttsbar{bottom:calc(56px + env(safe-area-inset-bottom,0px))}
+  body.tts-on #ttsbar{padding-bottom:6px}
+  body.tts-on main{padding-bottom:calc(130px + 56px)}
+  body.tts-on .toast{bottom:calc(64px + env(safe-area-inset-bottom,0px) + 104px)}
   /* a backdrop-filter on the header would trap the fixed tab bar inside it */
   /* the sheet's last row must clear the home indicator */
   .dlg{padding-bottom:calc(14px + env(safe-area-inset-bottom,0px))}
   /* keep messages clear of the tab bar */
   .toast{bottom:calc(64px + env(safe-area-inset-bottom,0px) + 12px)}
-  header{padding:6px 10px;-webkit-backdrop-filter:none;backdrop-filter:none}
+  header{padding:6px 10px;-webkit-backdrop-filter:none;backdrop-filter:none;
+    flex-wrap:wrap;align-items:center}
   /* the title had to give way to the tab row; with the tabs at the bottom it can return */
-  header h1 span{display:inline;font-size:15px}
-  main{padding-bottom:10px}
+  header h1{flex:1 1 auto;min-width:0}
+  header h1 span{display:inline;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  header .sp{display:none}
+  header #tgl{flex:0 0 auto}
+  main{padding-bottom:12px}
 }
 
 /* ================= reading panel + text weight ================= */
@@ -2614,6 +2666,196 @@ header.hdr-hide{transform:translateY(calc(-100% - env(safe-area-inset-top,0px)))
 #pres{z-index:50}
 body.pres-on #tabs{display:none}
 body.pres-on{padding-bottom:0}
+
+/* ========== App-like touch & professional polish ========== */
+html{-webkit-tap-highlight-color:transparent}
+button,a,.tab,.pchip,.pact,.promrow,.bmrow,.item,.row-i,.ch,.vpin,.xadd{
+  -webkit-tap-highlight-color:transparent;
+  touch-action:manipulation;
+}
+/* crisp press feedback — short, no laggy bounce */
+button,.tab,.pchip,.pact,.ch,.xadd,.tseg button{
+  transition:transform .06s ease-out,background-color .12s ease,color .12s ease,border-color .12s ease,box-shadow .12s ease;
+}
+button:active:not(:disabled),.tab:active,.pchip:active,.pact:active,.ch:active,.xadd:active{
+  transform:scale(.97);
+  opacity:.92;
+}
+/* bottom tabs: tighter native feel */
+@media(max-width:760px){
+  #tabs .tab{transition:color .12s ease,transform .06s ease-out}
+  #tabs .tab:active{transform:scale(.94);opacity:1}
+  #tabs .tab .ico{transition:stroke-width .12s ease}
+}
+/* lists & rows */
+.promrow,.bmrow,.row-i,.item{
+  transition:background-color .12s ease,transform .06s ease-out,box-shadow .12s ease;
+}
+.promrow:active,.bmrow:active,.row-i:active{
+  background:var(--ac2);
+}
+/* kill sticky hover on real touch devices */
+html.touch .promrow:hover,
+html.touch .bmrow:hover,
+html.touch .item:hover,
+html.touch .row-i:hover,
+html.touch .pact:hover,
+html.touch .pchip:hover,
+html.touch button:hover{
+  background:inherit;
+  border-color:inherit;
+  color:inherit;
+}
+html.touch .promrow:hover{background:var(--sf)}
+html.touch .pchip:hover{background:var(--sf);color:var(--tx)}
+html.touch .pchip.on:hover{background:var(--promise);color:var(--promise-ink)}
+
+/* ========== Promise library ========== */
+.promcard{padding:12px 12px 16px;border-radius:14px}
+.promhead{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin:0 0 12px}
+.promhead-t{min-width:0;flex:1 1 auto}
+.prom-hd{margin:0 0 2px;font-size:1.2em;letter-spacing:-.02em}
+.promsub{margin:0;font-size:.86em;color:var(--mu);line-height:1.35}
+.promcount{
+  flex:0 0 auto;min-width:36px;height:36px;padding:0 10px;border-radius:999px;
+  display:inline-flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:.9em;font-variant-numeric:tabular-nums;
+  background:color-mix(in srgb,var(--promise) 22%,var(--sf));
+  color:var(--promise-ink);
+  border:1px solid color-mix(in srgb,var(--promise) 40%,var(--bd));
+}
+.promtools{margin:0 0 12px}
+.promf{
+  display:flex;flex-wrap:nowrap;gap:6px;margin:0 0 10px;
+  overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;
+  padding:2px 0 4px;
+}
+.promf::-webkit-scrollbar{display:none}
+.pchip{
+  flex:0 0 auto;border:1px solid var(--bd);background:var(--sf);color:var(--tx);
+  border-radius:999px;padding:7px 14px;font-size:13px;min-height:36px;
+  font-weight:600;cursor:pointer;white-space:nowrap;
+}
+.pchip.on{
+  background:var(--promise);
+  border-color:color-mix(in srgb,#000 18%,var(--promise));
+  color:var(--promise-ink);
+  font-weight:700;
+  box-shadow:0 1px 4px color-mix(in srgb,var(--promise) 35%,transparent);
+}
+.promsearch{position:relative}
+.promq{
+  width:100%;min-height:42px;margin:0;
+  padding:10px 14px;font-size:16px;border-radius:12px;
+  border:1px solid var(--bd);background:var(--bg);
+  box-sizing:border-box;
+}
+.promq:focus{
+  outline:none;border-color:var(--promise);
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--promise) 22%,transparent);
+}
+.promlist{display:flex;flex-direction:column;gap:10px}
+.promrow{
+  display:flex;flex-direction:column;gap:6px;
+  padding:12px 12px 10px;border-radius:14px;cursor:pointer;
+  background:var(--sf);border:1px solid var(--bd);
+  box-shadow:0 1px 3px color-mix(in srgb,var(--tx) 5%,transparent);
+  -webkit-user-select:none;user-select:none;
+}
+.promrow-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.promrow-ref{display:flex;flex-wrap:wrap;align-items:center;gap:6px;min-width:0}
+.promrow-ref b{font-size:.98em;letter-spacing:-.01em}
+.promrow .ptag{
+  font-family:system-ui,-apple-system,sans-serif;font-size:.65em;font-weight:800;
+  padding:3px 9px;border-radius:999px;background:var(--promise);
+  color:var(--promise-ink);margin:0;vertical-align:middle;white-space:nowrap;
+  letter-spacing:.03em;text-transform:uppercase;
+}
+.promrow .ptext{
+  margin:0;font-size:.95em;line-height:1.55;color:var(--tx);
+  display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;
+}
+.promrow .pnote{
+  font-size:.84em;color:var(--mu);margin:0;font-style:italic;line-height:1.4;
+}
+.promrow .xadd{
+  flex:0 0 auto;width:36px;height:36px;min-width:36px;min-height:36px;padding:0;
+  border-radius:10px;font-size:1.15em;font-weight:700;line-height:1;
+  display:inline-flex;align-items:center;justify-content:center;
+}
+.promrow .pacts{display:flex;gap:6px;margin-top:4px;flex-wrap:wrap}
+.pact{
+  min-height:34px;padding:6px 14px;font-size:12.5px;border-radius:999px;font-weight:600;
+  border:1px solid var(--bd);background:var(--bg);color:var(--tx);cursor:pointer;
+}
+.pact.pri,.pacts .pact.pri{
+  background:var(--promise);border-color:color-mix(in srgb,#000 15%,var(--promise));
+  color:var(--promise-ink);
+}
+.pact:active{background:var(--ac2)}
+.promempty{
+  text-align:center;padding:28px 16px 20px;
+  border:1px dashed var(--bd);border-radius:14px;background:color-mix(in srgb,var(--sf) 80%,var(--bg));
+}
+.promempty-ico{font-size:1.8em;line-height:1;margin-bottom:8px;opacity:.85}
+.promempty-t{margin:0 0 6px;font-weight:700;font-size:1.05em}
+
+/* Promise of the day — richer card */
+.pod{
+  background:linear-gradient(165deg,color-mix(in srgb,var(--promise) 20%,var(--sf)),var(--sf) 70%);
+  border:1px solid color-mix(in srgb,var(--promise) 42%,var(--bd));
+  border-radius:16px;padding:14px 14px 12px;margin:0 0 14px;
+  box-shadow:0 4px 16px color-mix(in srgb,var(--promise) 12%,transparent);
+}
+.pod-h{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.pod-v{
+  font-family:var(--f),'Noto Serif Telugu',serif;font-size:1.08em;line-height:1.7;
+  margin:0 0 8px;color:var(--tx);
+}
+.pod-r{font-size:.88em;font-weight:700;color:var(--mu);margin:0 0 4px}
+.pod-n{font-size:.9em;color:var(--mu);font-style:italic;margin:0 0 6px}
+.pc-badge{
+  display:inline-flex;align-items:center;gap:4px;
+  font-size:.72em;font-weight:800;letter-spacing:.04em;text-transform:uppercase;
+  color:var(--promise-ink);
+  background:color-mix(in srgb,var(--promise) 28%,var(--sf));
+  border:1px solid color-mix(in srgb,var(--promise) 40%,transparent);
+  padding:3px 10px;border-radius:999px;
+}
+
+@media(max-width:600px){
+  .promcard{padding:10px 10px 14px;border-radius:12px}
+  .promrow{padding:12px;border-radius:12px}
+  .pchip{min-height:38px;padding:8px 14px;font-size:13px}
+  .pact{min-height:36px;padding:7px 14px;font-size:13px}
+  .promq{min-height:44px;border-radius:12px}
+  .pod{padding:14px 12px 12px}
+  .promrow .xadd{width:40px;height:40px;min-width:40px;min-height:40px}
+}
+
+/* Saved / bookmarks rows — match promise polish */
+.bmrow{
+  padding:12px;border-bottom:none;border-radius:12px;margin-bottom:8px;
+  border:1px solid var(--bd);background:var(--sf);
+}
+.bmrow:hover{background:color-mix(in srgb,var(--ac) 6%,var(--sf))}
+
+
+/* Return to sermon — always visible in presentation Bible view */
+#pres .pb #pback.pback{
+  display:inline-flex!important;align-items:center;justify-content:center;
+  order:0;flex:0 0 auto;
+  min-height:40px;min-width:auto;padding:6px 12px;
+  font-size:13px;font-weight:700;border-radius:12px;
+  background:var(--ac);color:var(--on-ac,#fff);border:1px solid var(--ac);
+}
+#pres .pb #pback.pback:active{transform:scale(.96);opacity:.92}
+@media(max-width:760px){
+  #pres .pb #pback.pback{
+    min-height:44px;padding:8px 14px;font-size:13.5px;border-radius:12px;
+    margin-right:4px;
+  }
+}
 </style></head><body>
 <header>
  <h1><svg class="logo" width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" style="fill:var(--ac)"/><path d="M16 9.5c-2.2-1.6-5-2.2-8-2v14.2c3-.2 5.8.4 8 2 2.2-1.6 5-2.2 8-2V7.5c-3-.2-5.8.4-8 2zM16 9.5v14.2" style="fill:none;stroke:var(--on-ac);stroke-width:1.7;stroke-linejoin:round;stroke-linecap:round"/></svg><span>Telugu Bible</span></h1>
@@ -5266,55 +5508,94 @@ function renderProm(){
       '<div class="pod-r">'+esc(TE[bi]||p[0])+' '+p[1]+':'+p[2]+'</div>'+
       (rec.n?'<div class="pod-n">'+esc(rec.n)+'</div>':'')+
       '<div class="pacts">'+
-        '<button type="button" class="pact" data-act="view" data-k="'+esc(today)+'">View</button>'+
+        '<button type="button" class="pact pri" data-act="view" data-k="'+esc(today)+'">Open card</button>'+
         '<button type="button" class="pact" data-act="copy" data-k="'+esc(today)+'">Copy</button>'+
         '<button type="button" class="pact" data-act="share" data-k="'+esc(today)+'">Share</button>'+
       '</div></div>';
   }
-  app.innerHTML='<div class="card" id="promcard"><h2 class="hd">\u2726 Promises ('+pk.length+')</h2>'+
+  app.innerHTML='<div class="card promcard" id="promcard">'+
+    '<div class="promhead">'+
+      '<div class="promhead-t">'+
+        '<h2 class="hd prom-hd">\u2726 Promise library</h2>'+
+        '<p class="promsub">'+(pk.length?pk.length+' saved promise'+(pk.length===1?'':'s'):'Your collected promises')+'</p>'+
+      '</div>'+
+      (pk.length?'<span class="promcount" aria-hidden="true">'+pk.length+'</span>':'')+
+    '</div>'+
     pod+
     (pk.length
-      ? '<div class="promf" id="promf"><button type="button" class="pchip on" data-cat="">All</button>'+
-          pCats.map(c=>'<button type="button" class="pchip" data-cat="'+esc(c)+'">'+esc(c)+'</button>').join('')+
+      ? '<div class="promtools">'+
+          '<div class="promf" id="promf" role="tablist" aria-label="Filter by category">'+
+            '<button type="button" class="pchip on" data-cat="" role="tab" aria-selected="true">All</button>'+
+            pCats.map(c=>'<button type="button" class="pchip" data-cat="'+esc(c)+'" role="tab" aria-selected="false">'+esc(c)+'</button>').join('')+
+          '</div>'+
+          '<div class="promsearch">'+
+            '<input id="promq" class="promq" placeholder="Search verse, note, or reference\u2026" autocomplete="off" aria-label="Search promises">'+
+          '</div>'+
         '</div>'+
-        '<input id="promq" class="promq" placeholder="Search promises\u2026" autocomplete="off" aria-label="Search promises">'+
         '<div class="promlist" id="promlist">'+
           pk.map(k=>{
             const p=k.split('|'),bi=EN.indexOf(p[0]),rec=S.prom[k]||{};
-            return '<div class="bmrow promrow" data-k="'+esc(k)+'" data-cat="'+esc(rec.c||'')+'">'+
-              '<b class="ac">'+esc(TE[bi]||p[0])+' '+p[1]+':'+p[2]+'</b>'+
-              '<span class="ptag">'+esc(rec.c||'Promise')+'</span>'+
-              '<button type="button" class="xadd" data-bk="'+esc(p[0])+'" data-ch="'+p[1]+'" data-vs="'+p[2]+'"'+
-                ' title="Add this verse to the sermon" aria-label="Add this verse to the sermon">+</button>'+
+            const snippet=esc(vtext(p[0],+p[1],+p[2])||'');
+            return '<article class="promrow" data-k="'+esc(k)+'" data-cat="'+esc(rec.c||'')+'" tabindex="0">'+
+              '<div class="promrow-top">'+
+                '<div class="promrow-ref">'+
+                  '<b class="ac">'+esc(TE[bi]||p[0])+' '+p[1]+':'+p[2]+'</b>'+
+                  '<span class="ptag">'+esc(rec.c||'Promise')+'</span>'+
+                '</div>'+
+                '<button type="button" class="xadd" data-bk="'+esc(p[0])+'" data-ch="'+p[1]+'" data-vs="'+p[2]+'"'+
+                  ' title="Add this verse to the sermon" aria-label="Add this verse to the sermon">+</button>'+
+              '</div>'+
               (rec.n?'<div class="pnote">'+esc(rec.n)+'</div>':'')+
-              '<div class="ptext">'+esc(vtext(p[0],+p[1],+p[2])||'')+'</div>'+
+              '<div class="ptext">'+snippet+'</div>'+
               '<div class="pacts">'+
-                '<button type="button" class="pact" data-act="view" data-k="'+esc(k)+'">View</button>'+
+                '<button type="button" class="pact" data-act="view" data-k="'+esc(k)+'">Card</button>'+
                 '<button type="button" class="pact" data-act="copy" data-k="'+esc(k)+'">Copy</button>'+
                 '<button type="button" class="pact" data-act="share" data-k="'+esc(k)+'">Share</button>'+
-              '</div></div>';
+              '</div></article>';
           }).join('')+
         '</div>'
-      : '<p class="muted">No promises yet. Open a verse and tap \u2726 Mark as promise to file it here.</p>')+
+      : '<div class="promempty">'+
+          '<div class="promempty-ico" aria-hidden="true">\u2726</div>'+
+          '<p class="promempty-t">No promises yet</p>'+
+          '<p class="muted">Open any verse, then tap <b>\u2726 Mark as promise</b> to collect it here.</p>'+
+        '</div>')+
     '</div>';
   const pf=$('#promf'),pq=$('#promq');
   const promFilter=()=>{
     const cat=(pf&&pf.querySelector('.pchip.on'))?pf.querySelector('.pchip.on').dataset.cat:'';
     const ql=(pq&&pq.value||'').trim().toLowerCase();
+    let n=0;
     $$('.promrow').forEach(r=>{
       const okCat=!cat||r.dataset.cat===cat;
       const okQ=!ql||(r.textContent||'').toLowerCase().indexOf(ql)>=0;
-      r.style.display=(okCat&&okQ)?'':'none';
+      const show=okCat&&okQ;
+      r.style.display=show?'':'none';
+      if(show)n++;
     });
+    const sub=document.querySelector('.promsub');
+    if(sub&&pk.length){
+      sub.textContent=n===pk.length?(pk.length+' saved promise'+(pk.length===1?'':'s')):(n+' of '+pk.length+' shown');
+    }
   };
   if(pf)pf.querySelectorAll('.pchip').forEach(b=>b.onclick=()=>{
-    pf.querySelectorAll('.pchip').forEach(x=>x.classList.toggle('on',x===b));
+    pf.querySelectorAll('.pchip').forEach(x=>{
+      const on=x===b;x.classList.toggle('on',on);x.setAttribute('aria-selected',on?'true':'false');
+    });
     promFilter();
   });
   if(pq)pq.addEventListener('input',promFilter);
-  $$('.bmrow').forEach(el=>el.onclick=e=>{
-    if(e.target.closest('.xadd')||e.target.closest('.pact'))return;
-    const p=el.dataset.k.split('|');goVerse(bidx(p[0]),+p[1],+p[2]);
+  $$('.promrow').forEach(el=>{
+    el.onclick=e=>{
+      if(e.target.closest('.xadd')||e.target.closest('.pact'))return;
+      const p=el.dataset.k.split('|');goVerse(bidx(p[0]),+p[1],+p[2]);
+    };
+    el.onkeydown=e=>{
+      if(e.key==='Enter'||e.key===' '){
+        if(e.target.closest('.xadd')||e.target.closest('.pact'))return;
+        e.preventDefault();
+        const p=el.dataset.k.split('|');goVerse(bidx(p[0]),+p[1],+p[2]);
+      }
+    };
   });
 }
 /* the promise on its own, ready to share */
@@ -7315,7 +7596,10 @@ function wirePresentTouch(){
 }
 
 function present(){
-  if(!cur)return;
+  if(!cur){toast('Open a sermon first');return}
+  /* close any leftover verse overlay from a previous session */
+  const vov=document.getElementById('vov');if(vov)vov.remove();
+  const pn=document.getElementById('pres-note');if(pn)pn.remove();
   presMode='ser';
   /* entry point: start at the paragraph you were editing, not always the first */
   let start=0;
@@ -7329,8 +7613,13 @@ function present(){
   psz=S.set.psize||autoSize();
   presStart=Date.now();
   const el=$('#pres');
-  el.classList.remove('hide');document.body.classList.add('pres-on');
+  if(!el)return;
+  el.classList.remove('hide','pres-bible');
+  el.classList.add('pres-ser');
+  document.body.classList.add('pres-on');
   el.classList.add('focus-one');
+  /* reset one-shot wiring flags so gestures always work after a prior exit */
+  el._tw=0;el._wired=0;
   presSer(true);/* keep entry point */
   el.scrollTop=0;
   wirePresentTouch();
@@ -7359,11 +7648,15 @@ function present(){
 }
 function pbarHtml(){
   const one=!!window._presFocusOne;
+  /* when Bible is open inside a sermon presentation, offer a clear way back */
+  const backSer=(presMode==='bible'&&cur)
+    ? '<button id="pback" class="pback pri" type="button" title="Return to sermon">← Sermon</button>'
+    : '';
   return '<div class="pbar"><i id="pbi"></i></div>'+
    '<button class="pgrip" id="pgrip" type="button" aria-label="Show controls" title="Show controls"></button>'+
    '<div class="pfoot" aria-hidden="true"><span id="pfc"></span></div>'+
    '<div class="pres-spot" id="pspot" aria-live="polite"></div>'+
-   '<div class="pb"><span class="pg" id="pg"></span><span id="ptm">0:00</span>'+
+   '<div class="pb">'+backSer+'<span class="pg" id="pg"></span><span id="ptm">0:00</span>'+
    '<button id="pv" title="Previous">‹</button><button id="nx" title="Next">›</button>'+
    '<button id="sw">'+(presMode==='ser'?'Bible':'Sermon')+'</button>'+
    '<button id="pfo" title="Focus: one point vs context">'+(one?'One':'All')+'</button>'+
@@ -7400,9 +7693,16 @@ function wirePbar(){
       window._presSerPi=pi;
       const pos=presBiblePos();
       presBible(pos.b,pos.c);
-    }else{
+    }else if(cur){
       presSer(true);
+    }else{
+      toast('No sermon is open');
     }
+  };
+  const pback=q('#pback');
+  if(pback)pback.onclick=()=>{
+    if(!cur){toast('No sermon is open');return}
+    presSer(true);
   };
   const pfo=q('#pfo');
   if(pfo)pfo.onclick=()=>{
@@ -7650,15 +7950,30 @@ function presBible(b,c){
 }
 function exitP(){
   const pn=document.getElementById('pres-note');if(pn)pn.remove();
+  const vov=document.getElementById('vov');if(vov)vov.remove();
   presExitAt=Date.now();
   clearInterval(presTick);presTick=null;
   clearTimeout(barTimer);
   unlockWake();
+  try{if(document.fullscreenElement)document.exitFullscreen()}catch(e){}
   const b=$('#blank');if(b)b.classList.remove('on');
-  $('#pres').classList.add('hide');$('#pres').innerHTML='';
-  $('#pres').classList.remove('showbar');
-  document.body.classList.remove('pres-on');rememberPos();
-  if(view==='bible')renderBible()
+  const el=$('#pres');
+  if(el){
+    el.classList.add('hide');
+    el.innerHTML='';
+    el.classList.remove('showbar','pres-bible','pres-ser','focus-one','focus-deep');
+    /* allow touch to be re-wired cleanly next time */
+    el._tw=0;el._wired=0;el._fit=0;
+  }
+  document.body.classList.remove('pres-on');
+  rememberPos();
+  /* rebuild the screen under the overlay — toggles/notes may have changed while presenting */
+  try{
+    if(view==='bible')renderBible();
+    else if(view==='ser')renderSer();
+    else if(view==='pr')renderProm();
+    else if(view==='bm')renderBM();
+  }catch(e){}
 }
 
 /* the closing tap must not fall through onto whatever sits under the overlay */
@@ -8479,9 +8794,14 @@ if(ok){
   }catch(e){}};
   document.addEventListener('click',e=>{
     const t=e.target.closest&&e.target.closest('.tab');
-    if(!t)return;
-    buzz(8);
-    try{localStorage.setItem('tb:view',t.dataset.v)}catch(err){}
+    if(t){
+      buzz(8);
+      try{localStorage.setItem('tb:view',t.dataset.v)}catch(err){}
+      return;
+    }
+    /* light tick on primary library controls */
+    const hit=e.target.closest&&e.target.closest('.pchip,.pact,.ch,header #tgl,.xadd');
+    if(hit)buzz(6);
   },true);
 
   /* --- each tab remembers where you were reading --- */
