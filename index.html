@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="te"><head><meta charset="utf-8">
-<meta name="build" content="2026-11-07-app14">
+<meta name="build" content="2026-11-08-app15">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="light dark">
 <meta name="mobile-web-app-capable" content="yes">
@@ -1191,10 +1191,46 @@ body.hl-on #hlb{box-shadow:0 0 0 3px color-mix(in srgb,var(--ac) 25%,transparent
 .pin{background:var(--ac2);border-left:5px solid var(--ac);padding:10px 14px;border-radius:8px;margin:10px 0}
 .pin b{color:var(--ac)}
 .rck{display:flex;gap:8px;align-items:flex-start;margin:0 0 10px;font-size:.86rem;line-height:1.35;cursor:pointer}
+/* Restore confirmation */
+.rst-head{display:flex;gap:12px;align-items:flex-start;margin:0 0 14px}
+.rst-ico{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+  font-size:1.35em;background:color-mix(in srgb,var(--ac) 16%,var(--sf));color:var(--ac);flex:0 0 auto}
+.rst-title{display:block;font-size:1.15em;margin:0 0 2px}
+.rst-sub{margin:0;font-size:.86em;color:var(--mu);line-height:1.35}
+.rst-cards{display:flex;flex-direction:column;gap:8px;margin:0 0 12px}
+.rst-card{text-align:left;display:flex;flex-direction:column;gap:4px;padding:12px 14px;border-radius:12px;
+  border:1px solid var(--bd);background:var(--sf);cursor:pointer;transition:border-color .15s,box-shadow .15s}
+.rst-card:hover{border-color:var(--ac);box-shadow:0 2px 10px color-mix(in srgb,var(--ac) 12%,transparent)}
+.rst-card.rp:hover{border-color:#c0392b;box-shadow:0 2px 10px color-mix(in srgb,#c0392b 14%,transparent)}
+.rst-card-t{font-weight:700;font-size:.98em}
+.rst-card-d{font-size:.82em;color:var(--mu);line-height:1.35}
+.rst-warn{font-size:.75em;font-weight:700;color:#c0392b;margin-top:2px}
+
+.dlg .rck{align-items:flex-start;gap:10px;margin:4px 0 12px;padding:8px 10px;border-radius:10px;background:var(--bg);border:1px solid var(--bd)}
+.dlg .rck span{flex:1;min-width:0}
+.dlg .rst-cards{margin-bottom:8px}
+.rst-opt{margin:8px 0 4px;width:100%;box-sizing:border-box}
+.rst-upd{margin:0;width:100%;box-sizing:border-box}
+.dlg .rst-opt .rck{
+  display:flex!important;flex-direction:row!important;gap:10px;align-items:flex-start;
+  padding:10px 12px;border-radius:10px;background:var(--bg);border:1px solid var(--bd);
+  font-size:.84em;line-height:1.4;width:100%;box-sizing:border-box;max-width:100%
+}
+.dlg .rst-opt .rck input{flex:0 0 auto;margin-top:3px}
+.dlg .rst-opt .rck span{
+  flex:1 1 auto!important;min-width:0!important;max-width:100%;
+  white-space:normal!important;word-break:break-word;overflow-wrap:anywhere;
+  writing-mode:horizontal-tb!important
+}
+.cnf{display:flex;gap:12px;align-items:flex-start;margin:0 0 6px}
+.cnf-ico{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:1.1em;background:color-mix(in srgb,#c0392b 14%,var(--sf));color:#c0392b;flex:0 0 auto}
+.cnf-t{margin:0;line-height:1.4;font-size:.95em}
+
 .rck input{margin:2px 0 0;flex:0 0 auto}
-.ov{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:60;display:flex;align-items:center;justify-content:center;padding:16px}
-.dlg{background:var(--sf);border:1px solid var(--bd);border-radius:12px;padding:12px;max-width:580px;width:100%;max-height:88vh;overflow:auto}
-.dlg textarea,.dlg input{width:100%;margin:6px 0}
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.48);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);z-index:60;display:flex;align-items:center;justify-content:center;padding:16px;animation:ovIn .18s ease}
+.dlg{background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:16px 16px 14px;max-width:420px;width:100%;max-height:88vh;overflow:auto;box-shadow:0 12px 40px rgba(0,0,0,.18)}
+.dlg textarea,.dlg input:not([type=checkbox]):not([type=radio]){width:100%;margin:6px 0}
 .ntb{display:flex;gap:2px;flex-wrap:wrap;align-items:center;margin:6px 0;padding:3px;width:fit-content;
  background:var(--bg);border:1px solid var(--bd);border-radius:10px}
 .ntb button{padding:4px 9px;min-width:32px;background:transparent;border:1px solid transparent;border-radius:7px;
@@ -2738,6 +2774,24 @@ html.touch .pchip.on:hover{background:var(--promise);color:var(--promise-ink)}
   box-shadow:0 1px 4px color-mix(in srgb,var(--promise) 35%,transparent);
 }
 .promsearch{position:relative}
+.prombar{display:flex;gap:8px;align-items:stretch;flex-wrap:wrap;margin:0 0 4px}
+.promselwrap{flex:0 1 180px;min-width:140px}
+.promcat{
+  width:100%;min-height:42px;margin:0;padding:8px 12px;font-size:14px;font-weight:600;
+  border-radius:12px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);
+  box-sizing:border-box;cursor:pointer;-webkit-appearance:none;appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23666' d='M1.4.6L6 5.2 10.6.6 12 2 6 8 0 2z'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;
+}
+.promcat:focus{outline:none;border-color:var(--promise);box-shadow:0 0 0 3px color-mix(in srgb,var(--promise) 22%,transparent)}
+.prombar .promsearch{flex:1 1 180px;min-width:140px}
+.promcard{padding:10px 12px 14px}
+.promhead{margin:0 0 10px}
+.promlist{gap:8px}
+.promrow{padding:10px 12px;border-radius:12px}
+.promempty{padding:28px 16px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
 .promq{
   width:100%;min-height:42px;margin:0;
   padding:10px 14px;font-size:16px;border-radius:12px;
@@ -4476,19 +4530,37 @@ function mergeBackup(j,update){
 }
 function chooseRestoreMode(){
   return new Promise(res=>{
-    modal('<b>Restore backup</b>'+
-      '<p class="hint"><b>Merge</b> keeps everything already on this device and adds only what is new. '+
-      '<b>Replace</b> wipes this device and uses the backup exactly.</p>'+
-      '<label class="rck"><input type="checkbox" id="rmergeupd">'+
-      '<span>Also update what this device already has when the backup\u2019s copy is different</span></label>'+
-      '<div class="row wrap"><button class="x">Cancel</button>'+
-      '<button class="mg">Merge</button><button class="rp dng">Replace</button></div>',
+    modal(
+      '<div class="rst-head"><div class="rst-ico" aria-hidden="true">\u21A9</div>'+
+      '<div><b class="rst-title">Restore backup</b>'+
+      '<p class="rst-sub">Choose how this backup should be applied to this device.</p></div></div>'+
+      '<div class="rst-cards">'+
+        '<button type="button" class="rst-card mg" data-m="merge">'+
+          '<span class="rst-card-t">Merge</span>'+
+          '<span class="rst-card-d">Keep everything already here. Add only items that are new in the backup.</span>'+
+        '</button>'+
+        '<button type="button" class="rst-card rp" data-m="replace">'+
+          '<span class="rst-card-t">Replace</span>'+
+          '<span class="rst-card-d">Erase current data on this device and use the backup exactly as saved.</span>'+
+          '<span class="rst-warn">This cannot be undone</span>'+
+        '</button>'+
+      '</div>'+
+      '<div class="rst-opt">'+
+        '<label class="rck rst-upd"><input type="checkbox" id="rmergeupd">'+
+        '<span>When merging, also update items this device already has if the backup copy is different</span></label>'+
+      '</div>'+
+      '<div class="row"><button type="button" class="x">Cancel</button></div>',
       (d,close)=>{
         d.querySelector('.x').onclick=()=>{close();res(null)};
-        d.querySelector('.mg').onclick=()=>{
-          const u=d.querySelector('#rmergeupd');const upd=!!(u&&u.checked);
-          close();res(upd?'mergeupd':'merge')};
-        d.querySelector('.rp').onclick=()=>{close();res('replace')};
+        d.querySelectorAll('.rst-card').forEach(btn=>btn.onclick=()=>{
+          const m=btn.dataset.m;
+          if(m==='merge'){
+            const u=d.querySelector('#rmergeupd');const upd=!!(u&&u.checked);
+            close();res(upd?'mergeupd':'merge');
+          }else{
+            close();res('replace');
+          }
+        });
       });
   });
 }
@@ -4572,7 +4644,7 @@ $('#fi').onchange=async e=>{
       (r.kept?', '+r.kept+' left as they are here':''));
     return;
   }
-  if(!await yes('Replace everything on this device with the backup?'))return;
+  if(!await yes('Replace everything on this device with the backup? All sermons, notes, promises and settings currently here will be permanently overwritten.'))return;
   flushSave();clearTimeout(saveTimer);saveTimer=null;
   S=sanitizeState(Object.assign(DEF(),j));
   await afterRestore('Backup restored');
@@ -4595,7 +4667,9 @@ const ask=(t,val='',multi=0,ph='')=>new Promise(r=>modal(
     i.addEventListener('keydown',e=>{if(e.key==='Enter'&&(!multi||e.ctrlKey)){e.preventDefault();ok()}
       if(e.key==='Escape'){e.preventDefault();no()}})}));
 const confirmBox=t=>new Promise(r=>modal(
-  '<p>'+esc(t)+'</p><div class="row"><button class="x">Cancel</button><button class="pri dng ok">Yes</button></div>',
+  '<div class="cnf"><div class="cnf-ico" aria-hidden="true">!</div>'+
+  '<p class="cnf-t">'+esc(t)+'</p></div>'+
+  '<div class="row"><button class="x">Cancel</button><button class="pri dng ok">Yes, continue</button></div>',
   (d,c)=>{d.querySelector('.x').onclick=()=>{c();r(false)};d.querySelector('.ok').onclick=()=>{c();r(true)}}));
 const yes=t=>confirmBox(t);
 
@@ -6371,12 +6445,17 @@ function renderProm(){
     pod+
     (pk.length
       ? '<div class="promtools">'+
-          '<div class="promf" id="promf" role="tablist" aria-label="Filter by category">'+
-            '<button type="button" class="pchip on" data-cat="" role="tab" aria-selected="true">All</button>'+
-            pCats.map(c=>'<button type="button" class="pchip" data-cat="'+esc(c)+'" role="tab" aria-selected="false">'+esc(c)+'</button>').join('')+
-          '</div>'+
-          '<div class="promsearch">'+
-            '<input id="promq" class="promq" placeholder="Search verse, note, or reference\u2026" autocomplete="off" aria-label="Search promises">'+
+          '<div class="prombar">'+
+            '<div class="promselwrap">'+
+              '<label class="sr-only" for="promcat">Category</label>'+
+              '<select id="promcat" class="promcat" aria-label="Filter by category">'+
+                '<option value="">All categories</option>'+
+                pCats.map(c=>'<option value="'+esc(c)+'">'+esc(c)+'</option>').join('')+
+              '</select>'+
+            '</div>'+
+            '<div class="promsearch">'+
+              '<input id="promq" class="promq" placeholder="Search verse, note, or reference\u2026" autocomplete="off" aria-label="Search promises">'+
+            '</div>'+
           '</div>'+
         '</div>'
       : '')+
@@ -6420,9 +6499,10 @@ function renderProm(){
     S.set.promTop=off?1:0;save();
     ptgl.setAttribute('aria-expanded',off?'false':'true');
   };
-  const pf=$('#promf'),pq=$('#promq');
+  const pq=$('#promq');
+  const pcat=$('#promcat');
   const promFilter=()=>{
-    const cat=(pf&&pf.querySelector('.pchip.on'))?pf.querySelector('.pchip.on').dataset.cat:'';
+    const cat=(pcat&&pcat.value)||'';
     const ql=(pq&&pq.value||'').trim().toLowerCase();
     let n=0;
     $$('.promrow').forEach(r=>{
@@ -6437,12 +6517,7 @@ function renderProm(){
       sub.textContent=n===pk.length?(pk.length+' saved promise'+(pk.length===1?'':'s')):(n+' of '+pk.length+' shown');
     }
   };
-  if(pf)pf.querySelectorAll('.pchip').forEach(b=>b.onclick=()=>{
-    pf.querySelectorAll('.pchip').forEach(x=>{
-      const on=x===b;x.classList.toggle('on',on);x.setAttribute('aria-selected',on?'true':'false');
-    });
-    promFilter();
-  });
+  if(pcat)pcat.onchange=promFilter;
   if(pq)pq.addEventListener('input',promFilter);
   $$('.promrow').forEach(el=>{
     el.onclick=e=>{
